@@ -48,11 +48,7 @@ func (b *Build) Translate(key string, a ...interface{}) (t string, err error) {
 
 	var o string // origin string
 
-	o = b.Index[key][b.Origin]
-
-	if o == "" {
-		o = b.Index[key][b.Origin[:2]]
-	}
+	o = b.Index[key][b.Origin] || b.Index[key][b.Origin[:2]]
 
 	if o == "" { // no key found? try matching strings
 		for k, v := range b.Index {
@@ -63,11 +59,7 @@ func (b *Build) Translate(key string, a ...interface{}) (t string, err error) {
 		}
 	}
 
-	t = b.Index[key][b.Target]
-
-	if t == "" {
-		t = b.Index[key][b.Target[:2]]
-	}
+	t = b.Index[key][b.Target] || b.Index[key][b.Target[:2]]
 
 	if o == "" || t == "" {
 		return t, errors.New("Couldn't find key/string")
