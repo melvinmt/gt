@@ -19,11 +19,12 @@ import (
 //  }, 
 //  Origin: "en",
 // }
-// t.Target = "es"
+//
+// g.Target = "es"
+// keyStr := g.T("homepage-greeting", "Github", "John") // outputs: ¡Bienvenido a Github, John!
 // 
-// keyStr := g.T("homepage-greeting")
-// 
-// literalStr := g.T("Welcome to %s#title, %s#name!")
+// g.Target = "nl"
+// literalStr := g.T("Welcome to %s#title, %s#name!", "Yahoo", "Marissa") // outputs: Welkom bij Yahoo, Marissa!
 // 
 type Strings map[string]string
 type Keys map[string]Strings
