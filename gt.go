@@ -62,15 +62,14 @@ func (b *Build) Translate(key string, a ...interface{}) (t string, err error) {
 	t = b.Index[key][b.Target] || b.Index[key][b.Target[:2]]
 
 	if o == "" || t == "" {
-		return t, errors.New("Couldn't find key/string")
+		return t, errors.New("Couldn't find key/string or target string")
 	}
 
 	if len(a) == 0 { // no arguments? return string
 		return t, err
 	}
 
-	oVerbs := ParseStr(o)
-	tVerbs := ParseStr(t)
+	oVerbs, tVerbs := ParseVerbs(o), ParseVerbs(t)
 
 	if len(oVerbs) < len(a) || len(tVerbs) < len(a) {
 		return t, errors.New("Couldn't find enough verbs to parse args")
@@ -108,8 +107,8 @@ func (b *Build) Translate(key string, a ...interface{}) (t string, err error) {
 	return t, err
 }
 
-// ParseStr returns an array of parsed verbs with optional tags
-func ParseStr(str string) (verbs []string, err error) {
+// ParseVerbs returns an array of parsed verbs with optional tags
+func ParseVerbs(str string) (verbs []string, err error) {
 	r, _ := regexp.Compile(`(%(?:\d+\$)?[+-]?(?:[ 0]|'.{1})?-?\d*(?:\.\d+)?#?[bcdeEfFgGopqstTuUvxX%]?)(#[\w0-9-_]+)?`)
 	m := r.FindAllStringSubmatch(str, -1)
 
