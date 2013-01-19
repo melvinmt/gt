@@ -23,8 +23,8 @@ import (
 // g.Target = "es"
 // keyStr := g.T("homepage-greeting", "Github", "John") // outputs: ¡Bienvenido a Github, John!
 // 
-// g.Target = "nl"
-// literalStr := g.T("Welcome to %s#title, %s#name!", "Yahoo", "Marissa") // outputs: Welkom bij Yahoo, Marissa!
+// g.Target = "tr"
+// SOVStr := g.T("Welcome to %s#title, %s#name!", "Yahoo", "Marissa") // outputs: Marissa, Yahoo'ya hoşgeldiniz!
 // 
 type Strings map[string]string
 type Keys map[string]Strings
