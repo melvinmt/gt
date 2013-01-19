@@ -35,7 +35,7 @@ type Build struct {
 	Index  Keys   // the index which contains all keys and strings
 }
 
-// T is a shorthand function for Translate, ignores errors and strictly returns strings
+// T is a shorthand method for Translate, ignores errors and strictly returns strings
 func (b *Build) T(key string, a ...interface{}) (t string) {
 	t, _ = b.Translate(key, a...)
 	return t
@@ -101,12 +101,7 @@ func (b *Build) Translate(key string, a ...interface{}) (t string, err error) {
 	// time to switch it up!
 	if len(oVerbs) == len(tVerbs) { // check if both verbs arrays are the same length
 		var r *regexp.Regexp
-		r, err = regexp.Compile(`(#[\w0-9-_]+)`) // compile regex to match tags
-
-		if err != nil {
-			return t, errors.New("Couldn't compile regex to match tags")
-		}
-
+		r, _ = regexp.Compile(`(#[\w0-9-_]+)`)      // compile regex to match tags
 		newArgs := make([]interface{}, len(oVerbs)) // create new args slice
 
 		for ti, dirtyVerb := range tVerbs {
@@ -135,12 +130,7 @@ func (b *Build) Translate(key string, a ...interface{}) (t string, err error) {
 
 // ParseStr returns an array of parsed verbs with optional tags
 func ParseStr(str string) (verbs []string, err error) {
-	r, err := regexp.Compile(`(%(?:\d+\$)?[+-]?(?:[ 0]|'.{1})?-?\d*(?:\.\d+)?#?[bcdeEfFgGopqstTuUvxX%]?)(#[\w0-9-_]+)?`)
-
-	if err != nil {
-		return verbs, errors.New("Couldn't compile regex to parse strings")
-	}
-
+	r, _ := regexp.Compile(`(%(?:\d+\$)?[+-]?(?:[ 0]|'.{1})?-?\d*(?:\.\d+)?#?[bcdeEfFgGopqstTuUvxX%]?)(#[\w0-9-_]+)?`)
 	m := r.FindAllStringSubmatch(str, -1)
 
 	if len(m) > 0 {
