@@ -8,7 +8,7 @@ import (
 )
 
 // var g = &gt.Build{
-// 	Index: .gt.Keys{
+// 	Index: gt.Keys{
 // 		"homepage-greeting": gt.Strings{
 // 			"en": "Welcome to %s#title, %s#name!"
 // 			"es-LA": "¡Bienvenido a %s#title, %s#titlename!",
