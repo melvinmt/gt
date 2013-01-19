@@ -1,0 +1,1 @@
+A tiny but powerful Go translation library (work in progress).
