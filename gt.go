@@ -84,16 +84,11 @@ func (b *Build) Translate(key string, a ...interface{}) (t string, err error) {
 		return t, err
 	}
 
-	oVerbs, err := ParseStr(o)
+	oVerbs := ParseStr(o)
+	tVerbs := ParseStr(t)
 
-	if err != nil {
-		return t, errors.New("Couldn't parse origin string")
-	}
-
-	tVerbs, err := ParseStr(t)
-
-	if err != nil {
-		return t, errors.New("Couldn't parse target string")
+	if len(oVerbs) < len(a) || len(tVerbs) < len(a) {
+		return t, errors.New("Couldn't find enough verbs to parse args")
 	}
 
 	var cleanVerb string
@@ -138,10 +133,7 @@ func ParseStr(str string) (verbs []string, err error) {
 		for i, v := range m[0] {
 			verbs[i] = v
 		}
-	} else {
-		return verbs, errors.New("No matches found")
 	}
-
 	return verbs, err
 }
 
