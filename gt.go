@@ -35,6 +35,12 @@ type Build struct {
 	Index  Keys   // the index which contains all keys and strings
 }
 
+// T is a shorthand function for Translate, ignores errors and strictly returns strings
+func (b *Build) T(key string, a ...interface{}) (t string) {
+	t, _ = b.Translate(key, a...)
+	return t
+}
+
 // Translate finds a string for key in target env and transliterates it.
 // Will return key if string or target env is not found.
 // 
@@ -125,12 +131,6 @@ func (b *Build) Translate(key string, a ...interface{}) (t string, err error) {
 	}
 
 	return t, err
-}
-
-// T is a shorthand function for Translate, ignores errors and strictly returns strings
-func (b *Build) T(key string, a ...interface{}) (t string) {
-	t, _ = b.Translate(key, a...)
-	return t
 }
 
 // ParseStr returns an array of parsed verbs with optional tags
