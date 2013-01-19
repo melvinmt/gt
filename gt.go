@@ -85,9 +85,7 @@ func (b *Build) Translate(key string, a ...interface{}) (t string, err error) {
 		newArgs := make([]interface{}, len(oVerbs)) // create new args slice
 
 		for ti, dirtyVerb := range tVerbs {
-
 			for oi, ov := range oVerbs {
-
 				if ov == dirtyVerb && a[oi] != nil { // find original argument 
 					newArgs[ti] = a[oi]                                  // assign argument to current position
 					a[oi] = nil                                          // unset arg
@@ -123,6 +121,7 @@ func ParseStr(str string) (verbs []string, err error) {
 	if err != nil {
 		return verbs, errors.New("Couldn't compile regex to parse strings")
 	}
+
 	m := r.FindAllStringSubmatch(str, -1)
 
 	if len(m) > 0 {
