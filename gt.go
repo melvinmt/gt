@@ -46,38 +46,31 @@ func (b *Build) T(key string, a ...interface{}) (t string) {
 // 
 func (b *Build) Translate(key string, a ...interface{}) (t string, err error) {
 
-	if len(b.Index) == 0 {
-		return key, errors.New("Index needs to be set first")
-	}
-
 	var o string // origin string
 
-	// try to find origin string by key
-	if b.Index[key][b.Origin] != "" {
-		o = b.Index[key][b.Origin]
-	} else if b.Index[key][b.Origin[:2]] != "" {
+	o = b.Index[key][b.Origin]
+
+	if o == "" {
 		o = b.Index[key][b.Origin[:2]]
 	}
 
 	if o == "" { // no key found? try matching strings
 		for k, v := range b.Index {
-			if v[b.Origin] == key {
-				o = key // key is origin string!
-				key = k // found key in k
+			if key == v[b.Origin] {
+				o, key = key, k
 				break
 			}
 		}
 	}
 
-	// try to find target string
-	if b.Index[key][b.Target] != "" {
-		t = b.Index[key][b.Target]
-	} else if b.Index[key][b.Target[:2]] != "" {
+	t = b.Index[key][b.Target]
+
+	if t == "" {
 		t = b.Index[key][b.Target[:2]]
 	}
 
-	if o == "" || t == "" || b.Target == b.Origin {
-		return t, errors.New("Couldn't find key/string or target is the same as origin")
+	if o == "" || t == "" {
+		return t, errors.New("Couldn't find key/string")
 	}
 
 	if len(a) == 0 { // no arguments? return string
