@@ -7,13 +7,31 @@ import (
 	"strings"
 )
 
+// var g = &gt.Build{
+// 	Index: .gt.Keys{
+// 		"homepage-greeting": gt.Strings{
+// 			"en": "Welcome to %s#title, %s#name!"
+// 			"es-LA": "¡Bienvenido a %s#title, %s#titlename!",
+// 			"nl": "Welkom bij %s#title, %s#name!",
+// 			"tr": "%s#name, %s#title'ya hoşgeldiniz!", // tag notation proves useful in SOV languages where subject comes before object/verb
+// 			"zh-CN": "欢迎%s#title, %s#name!", 
+// 		},
+// 	}, 
+// 	Origin: "en",
+// }
+// t.Target = "es"
+// 
+// keyStr := g.T("homepage-greeting")
+// 
+// literalStr := g.T("Welcome to %s#title, %s#name!")
+// 
 type Strings map[string]string
 type Keys map[string]Strings
 
 type Build struct {
 	Origin string // the originating env
 	Target string // the target env
-	Index  Keys   // pointer to a Keys map
+	Index  Keys   // the index which contains all keys and strings
 }
 
 // Translate finds a string for key in target env and transliterates it.
@@ -98,11 +116,11 @@ func (b *Build) Translate(key string, a ...interface{}) (t string, err error) {
 		if len(newArgs) == len(a) {
 			t = fmt.Sprintf(t, newArgs...) // replace verbs with args
 		} else {
-			return t, errors.New("Impossible to assign arguments to string.")
+			return t, errors.New("Impossible to assign arguments to string")
 		}
 
 	} else {
-		return t, errors.New("Number of printf verbs in origin and target string do not match.")
+		return t, errors.New("Number of printf verbs in origin and target string do not match")
 	}
 
 	return t, err
@@ -130,24 +148,11 @@ func ParseStr(str string) (verbs []string, err error) {
 			verbs[i] = v
 		}
 	} else {
-		return verbs, errors.New("No matches found.")
+		return verbs, errors.New("No matches found")
 	}
 
 	return verbs, err
 }
-
-// var g = &gt.Build{
-// 	Index: .gt.Keys{
-// 		"homepage-greeting": gt.Strings{
-// 			"en": "Welcome to %stitle, %s#name!"
-// 			"es-LA": "¡Bienvenido a %s#title, %s#titlename!",
-// 			"nl": "Welkom bij %s#title, %s#name!",
-// 			"tr": "%s#name, %s#title'ya hoşgeldiniz!", // tag notation proves useful in SOV languages where subject comes before object/verb
-// 			"zh-CN": "欢迎%s#title, #name!", 
-// 		},
-// 	}, 
-// 	Origin: "en",
-// }
 
 // t.Target = "es"
 
