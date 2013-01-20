@@ -65,7 +65,7 @@ func (b *Build) Translate(key string, a ...interface{}) (t string, err error) {
 		return t, errors.New("Arguments count is different than verbs count.")
 	}
 
-	if len(oVerbs) == len(tVerbs) {
+	if len(oVerbs) != len(tVerbs) {
 		return t, errors.New("Verbs count in origin and target string do not match")
 	}
 
