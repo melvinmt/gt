@@ -42,10 +42,16 @@ func (b *Build) T(key string, a ...interface{}) (t string) {
 
 // Translate() translates a key or string from origin to target.
 // Parses augmented sprintf format when additional arguments are given.
-func (b *Build) Translate(key string, a ...interface{}) (t string, err error) {
+func (b *Build) Translate(str string, a ...interface{}) (t string, err error) {
+
+	if b.Origin == "" || b.Target == "" {
+		return str, errors.New("Origin or target string is not set.")
+	}
 
 	// Try to find origin string by key or key[:2]
 	var o string // origin string
+	key := str   // key can differ from str
+
 	if b.Index[key][b.Origin] != "" {
 		o = b.Index[key][b.Origin]
 	} else if b.Index[key][b.Origin[:2]] != "" {
@@ -66,7 +72,7 @@ func (b *Build) Translate(key string, a ...interface{}) (t string, err error) {
 		t = b.Index[key][b.Target[:2]]
 	}
 	if o == "" || t == "" {
-		return t, errors.New("Couldn't find origin or target string.")
+		return str, errors.New("Couldn't find origin or target string.")
 	}
 	// When no additional arguments are given, there's nothing left to do.
 	if len(a) == 0 {
@@ -75,7 +81,7 @@ func (b *Build) Translate(key string, a ...interface{}) (t string, err error) {
 	// Find verbs in both strings.
 	oVerbs, tVerbs := findVerbs(o), findVerbs(t)
 	if len(oVerbs) != len(a) || len(tVerbs) != len(a) {
-		return t, errors.New("Arguments count is different than verbs count.")
+		return str, errors.New("Arguments count is different than verbs count.")
 	}
 	// Swap arguments positions and clean up tags.
 	r, _ := regexp.Compile(`(#[\w0-9-_]+)`)
