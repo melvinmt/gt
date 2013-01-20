@@ -24,9 +24,8 @@ func (b *Build) T(key string, a ...interface{}) (t string) {
 // Parses augmented sprintf format when additional arguments are given.
 func (b *Build) Translate(key string, a ...interface{}) (t string, err error) {
 
-	var o string // origin string
-
 	// Try to find origin string by key or key[:2]
+	var o string // origin string
 	if b.Index[key][b.Origin] != "" {
 		o = b.Index[key][b.Origin]
 	} else if b.Index[key][b.Origin[:2]] != "" {
@@ -83,6 +82,7 @@ func (b *Build) Translate(key string, a ...interface{}) (t string, err error) {
 		}
 	}
 
+	// Parse arguments into string.
 	t = fmt.Sprintf(t, a...)
 
 	return t, err
