@@ -48,9 +48,8 @@ func (b *Build) Translate(key string, a ...interface{}) (t string, err error) {
 		o = b.Index[key][b.Origin]
 	} else if b.Index[key][b.Origin[:2]] != "" {
 		o = b.Index[key][b.Origin[:2]]
-	}
-	// If key is not found, try matching strings in origin.
-	if o == "" {
+	} else {
+		// If key is not found, try matching strings in origin.
 		for k, v := range b.Index {
 			if key == v[b.Origin] {
 				o, key = key, k
