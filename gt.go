@@ -45,7 +45,7 @@ func (b *Build) T(key string, a ...interface{}) (t string) {
 func (b *Build) Translate(str string, a ...interface{}) (t string, err error) {
 
 	if b.Origin == "" || b.Target == "" {
-		return str, errors.New("Origin or target string is not set.")
+		return str, errors.New("Origin or target is not set.")
 	}
 
 	// Try to find origin string by key or key[:2]
