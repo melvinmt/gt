@@ -31,7 +31,6 @@ func (b *Build) Translate(key string, a ...interface{}) (t string, err error) {
 	} else if b.Index[key][b.Origin[:2]] != "" {
 		o = b.Index[key][b.Origin[:2]]
 	}
-
 	// If key is not found, try matching strings in origin.
 	if o == "" {
 		for k, v := range b.Index {
@@ -41,34 +40,27 @@ func (b *Build) Translate(key string, a ...interface{}) (t string, err error) {
 			}
 		}
 	}
-
 	// Try to find target string by key or key[:2]
 	if b.Index[key][b.Target] != "" {
 		t = b.Index[key][b.Target]
 	} else if b.Index[key][b.Target[:2]] != "" {
 		t = b.Index[key][b.Target[:2]]
 	}
-
 	if o == "" || t == "" {
 		return t, errors.New("Couldn't find origin or target string.")
 	}
-
 	// When no additional arguments are given, there's nothing left to do.
 	if len(a) == 0 {
 		return t, err
 	}
-
 	// Find verbs in both strings.
 	oVerbs, tVerbs := findVerbs(o), findVerbs(t)
-
 	if len(oVerbs) != len(a) || len(tVerbs) != len(a) {
 		return t, errors.New("Arguments count is different than verbs count.")
 	}
-
 	if len(oVerbs) != len(tVerbs) {
 		return t, errors.New("Verbs count in origin and target string do not match")
 	}
-
 	// Swap arguments positions and clean up tags.
 	r, _ := regexp.Compile(`(#[\w0-9-_]+)`)
 	for i, v := range tVerbs {
@@ -81,10 +73,8 @@ func (b *Build) Translate(key string, a ...interface{}) (t string, err error) {
 			}
 		}
 	}
-
 	// Parse arguments into string.
 	t = fmt.Sprintf(t, a...)
-
 	return t, err
 }
 
