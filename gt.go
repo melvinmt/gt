@@ -35,14 +35,14 @@ type Build struct {
 }
 
 // T() is a shorthand method for Translate. Ignores errors and strictly returns strings.
-func (b *Build) T(key string, a ...interface{}) (t string) {
-	t, _ = b.Translate(key, a...)
+func (b *Build) T(s string, a ...interface{}) (t string) {
+	t, _ = b.Translate(s, a...)
 	return t
 }
 
 // Translate() translates a key or string from origin to target.
 // Parses augmented sprintf format when additional arguments are given.
-func (b *Build) Translate(str string, a ...interface{}) (t string, err error) {
+func (b *Build) Translate(str string, args ...interface{}) (t string, err error) {
 
 	if b.Origin == "" || b.Target == "" {
 		return str, errors.New("Origin or target is not set.")
@@ -78,31 +78,31 @@ func (b *Build) Translate(str string, a ...interface{}) (t string, err error) {
 	}
 
 	// When no additional arguments are given, there's nothing left to do.
-	if len(a) == 0 {
+	if len(args) == 0 {
 		return t, err
 	}
 
 	// Find verbs in both strings.
 	oVerbs, tVerbs := findVerbs(o), findVerbs(t)
-	if len(oVerbs) != len(a) || len(tVerbs) != len(a) {
+	if len(oVerbs) != len(args) || len(tVerbs) != len(args) {
 		return str, errors.New("Arguments count is different than verbs count.")
 	}
 
 	// Swap arguments positions and clean up tags.
 	r, _ := regexp.Compile(`(#[\w0-9-_]+)`)
-	for i, v := range tVerbs {
-		for j, v2 := range oVerbs {
-			if v == v2 {
-				a[j], a[i] = a[i], a[j]
-				c := r.ReplaceAllLiteralString(v, "")
-				t = strings.Replace(t, v, c, -1)
+	for i, verb := range tVerbs {
+		for j, verb2 := range oVerbs {
+			if verb == verb2 {
+				args[j], args[i] = args[i], args[j]
+				cleanVerb := r.ReplaceAllLiteralString(verb, "")
+				t = strings.Replace(t, verb, cleanVerb, -1)
 				break
 			}
 		}
 	}
 
 	// Parse arguments into string.
-	t = fmt.Sprintf(t, a...)
+	t = fmt.Sprintf(t, args...)
 	return t, err
 }
 
