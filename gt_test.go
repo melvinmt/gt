@@ -23,7 +23,7 @@ import (
 )
 
 func TestBuild(t *testing.T) {
-	var g = &Build{
+	g := &Build{
 		Index: Strings{
 			"homepage-greeting": {
 				"en":    "Welcome to %s#title, %s#name!",
@@ -37,7 +37,7 @@ func TestBuild(t *testing.T) {
 }
 
 func TestNoTargetString(t *testing.T) {
-	var g = &Build{
+	g := &Build{
 		Index: Strings{
 			"homepage-greeting": {
 				"en": "Welcome to %s#title, %s#name!",
@@ -71,7 +71,7 @@ func TestNoTargetString(t *testing.T) {
 }
 
 func TestNoOriginString(t *testing.T) {
-	var g = &Build{
+	g := &Build{
 		Index: Strings{
 			"homepage-greeting": {
 				"es-LA": "¡Bienvenido a %s#title, %s#title!",
@@ -105,7 +105,7 @@ func TestNoOriginString(t *testing.T) {
 }
 
 func TestNoOrigin(t *testing.T) {
-	var g = &Build{
+	g := &Build{
 		Index: Strings{
 			"homepage-greeting": {
 				"en":    "Welcome to %s#title, %s#name!",
@@ -139,7 +139,7 @@ func TestNoOrigin(t *testing.T) {
 }
 
 func TestNoTarget(t *testing.T) {
-	var g = &Build{
+	g := &Build{
 		Index: Strings{
 			"homepage-greeting": {
 				"en":    "Welcome to %s#title, %s#name!",
