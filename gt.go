@@ -55,11 +55,8 @@ func (b *Build) Translate(key string, a ...interface{}) (t string, err error) {
 	}
 	// Find verbs in both strings.
 	oVerbs, tVerbs := findVerbs(o), findVerbs(t)
-	if len(oVerbs) != len(a) || len(tVerbs) != len(a) {
+	if len(oVerbs) != len(a) || len(tVerbs) != len(a) || len(oVerbs) != len(tVerbs) {
 		return t, errors.New("Arguments count is different than verbs count.")
-	}
-	if len(oVerbs) != len(tVerbs) {
-		return t, errors.New("Verbs count in origin and target string do not match")
 	}
 	// Swap arguments positions and clean up tags.
 	r, _ := regexp.Compile(`(#[\w0-9-_]+)`)
