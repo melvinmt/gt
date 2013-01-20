@@ -92,7 +92,7 @@ func (b *Build) Translate(key string, a ...interface{}) (t string, err error) {
 func findVerbs(s string) (v []string) {
 	r, _ := regexp.Compile(`%(?:\d+\$)?[+-]?(?:[ 0]|'.{1})?-?\d*(?:\.\d+)?#?[bcdeEfFgGopqstTuUvxX%]?[#[\w0-9-_]+]?`)
 	m := r.FindAllStringSubmatch(s, -1)
-	if len(m[0]) > 0 {
+	if len(m) > 0 && len(m[0]) > 0 {
 		v = m[0]
 	}
 	return v
