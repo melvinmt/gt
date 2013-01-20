@@ -55,7 +55,7 @@ func (b *Build) Translate(key string, a ...interface{}) (t string, err error) {
 	}
 	// Find verbs in both strings.
 	oVerbs, tVerbs := findVerbs(o), findVerbs(t)
-	if len(oVerbs) != len(a) || len(tVerbs) != len(a) || len(oVerbs) != len(tVerbs) {
+	if len(oVerbs) != len(a) || len(tVerbs) != len(a) {
 		return t, errors.New("Arguments count is different than verbs count.")
 	}
 	// Swap arguments positions and clean up tags.
