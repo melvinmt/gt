@@ -25,11 +25,13 @@ import (
 	"strings"
 )
 
+type Strings map[string]map[string]string
+
 // Set up Build environment first before starting translations.
 type Build struct {
-	Origin string                       // the origin env
-	Target string                       // the target env
-	Index  map[string]map[string]string // the index which contains all keys and strings
+	Origin string  // the origin env
+	Target string  // the target env
+	Index  Strings // the index which contains all keys and strings
 }
 
 // T() is a shorthand method for Translate. Ignores errors and strictly returns strings.
