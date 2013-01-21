@@ -49,9 +49,10 @@ func TestNoTargetString(t *testing.T) {
 	func() {
 		t.Log("Test key")
 		s := "homepage-greeting"
-		tr, err := g.Translate(s)
-		if s != tr {
-			t.Errorf("Returned string '%s' is not the same as input string '%s'", tr, s)
+		tr, err := g.Translate(s, "gt", "Melvin")
+		if tr != "Welcome to gt, Melvin!" {
+			t.Errorf("Returned string '%s' is not Welcome to gt, Melvin!", tr)
+			t.Error(err)
 		}
 		if err == nil {
 			t.Error("Should return: could not find error")
@@ -60,9 +61,9 @@ func TestNoTargetString(t *testing.T) {
 	func() {
 		t.Log("Test string")
 		s := "Welcome to %s#title, %s#name!"
-		tr, err := g.Translate(s)
-		if s != tr {
-			t.Errorf("Returned string '%s' is not the same as input string '%s'", tr, s)
+		tr, err := g.Translate(s, "gt", "Melvin")
+		if tr != "Welcome to gt, Melvin!" {
+			t.Errorf("Returned string '%s' is not Welcome to gt, Melvin!", tr)
 		}
 		if err == nil {
 			t.Error("Should return: could not find error")
@@ -94,9 +95,9 @@ func TestNoOriginString(t *testing.T) {
 	func() {
 		t.Log("Test string")
 		s := "Welcome to %s#title, %s#name!"
-		tr, err := g.Translate(s)
-		if s != tr {
-			t.Errorf("Returned string '%s' is not the same as input string '%s'", tr, s)
+		tr, err := g.Translate(s, "gt", "Melvin")
+		if tr != "Welcome to gt, Melvin!" {
+			t.Errorf("Returned string '%s' is not the same as Welcome to gt, Melvin!", tr)
 		}
 		if err == nil {
 			t.Error("Should return: could not find error")
@@ -123,9 +124,9 @@ func TestNoIndex(t *testing.T) {
 	func() {
 		t.Log("Test string")
 		s := "Welcome to %s#title, %s#name!"
-		tr, err := g.Translate(s)
-		if s != tr {
-			t.Errorf("Returned string '%s' is not the same as input string '%s'", tr, s)
+		tr, err := g.Translate(s, "gt", "Melvin")
+		if tr != "Welcome to gt, Melvin!" {
+			t.Errorf("Returned string '%s' is not the same as Welcome to gt, Melvin!", tr)
 		}
 		if err == nil {
 			t.Error("Should return: target or origin is not set")
@@ -157,9 +158,9 @@ func TestNoOrigin(t *testing.T) {
 	func() {
 		t.Log("Test string")
 		s := "Welcome to %s#title, %s#name!"
-		tr, err := g.Translate(s)
-		if s != tr {
-			t.Errorf("Returned string '%s' is not the same as input string '%s'", tr, s)
+		tr, err := g.Translate(s, "gt", "Melvin")
+		if tr != "Welcome to gt, Melvin!" {
+			t.Errorf("Returned string '%s' is not the same as Welcome to gt, Melvin!", tr)
 		}
 		if err == nil {
 			t.Error("Should return: target or origin is not set")
@@ -191,9 +192,9 @@ func TestNoTarget(t *testing.T) {
 	func() {
 		t.Log("Test string")
 		s := "Welcome to %s#title, %s#name!"
-		tr, err := g.Translate(s)
-		if s != tr {
-			t.Errorf("Returned string '%s' is not the same as input string '%s'", tr, s)
+		tr, err := g.Translate(s, "gt", "Melvin")
+		if tr != "Welcome to gt, Melvin!" {
+			t.Errorf("Returned string '%s' is not the same as Welcome to gt, Melvin!", tr)
 		}
 		if err == nil {
 			t.Error("Should return: target or origin is not set")
@@ -392,8 +393,8 @@ func TestArgsTranslationInvalidSyntax(t *testing.T) {
 		t.Log("Test duplicate verbs in different order")
 		s := "Welcome to %s#title-web_site, %s#name2! Your name is the same: %s#name2"
 		tr, err := g.Translate(s, "gt", "Melvin", "Melvin")
-		if tr != s {
-			t.Errorf("Returned string '%s' is not the same as '%s'", tr, s)
+		if tr != "Welcome to gt, Melvin! Your name is the same: Melvin" {
+			t.Errorf("Returned string '%s' is not the same as Welcome to gt, Melvin! Your name is the same: Melvin", tr)
 		}
 		if err == nil {
 			t.Error("Should return Verbs have to be swapped but are not unique error")
