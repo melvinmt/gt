@@ -152,6 +152,7 @@ func TestNoOrigin(t *testing.T) {
 			t.Errorf("Returned string '%s' is not the same as input string '%s'", tr, s)
 		}
 		if err == nil {
+			t.Error(err)
 			t.Error("Should return: target or origin is not set")
 		}
 	}()
@@ -182,8 +183,8 @@ func TestNoTarget(t *testing.T) {
 		t.Log("Test key")
 		s := "homepage-greeting"
 		tr, err := g.Translate(s)
-		if s != tr {
-			t.Errorf("Returned string '%s' is not the same as input string '%s'", tr, s)
+		if tr != "Welcome to %s(MISSING), %s(MISSING)!" {
+			t.Errorf("Returned string '%s' is not the same as Welcome to %s(MISSING), %s(MISSING)!", tr)
 		}
 		if err == nil {
 			t.Error("Should return: target or origin is not set")
@@ -399,5 +400,26 @@ func TestArgsTranslationInvalidSyntax(t *testing.T) {
 		if err == nil {
 			t.Error("Should return Verbs have to be swapped but are not unique error")
 		}
+	}()
+}
+
+func TestSetTargetOrOrigin(t *testing.T) {
+	g := &Build{
+		Index: Strings{
+			"duplicate-different-order": {
+				"en":    "Welcome to %s#title-web_site, %s#name2! Your name is the same: %s#name2",
+				"es-LA": "¡Bienvenido a %s#name2, %s#title-web_site! Tu nombre es mismo: %s#name2",
+			},
+		},
+	}
+	func() {
+		t.Log("setting Target")
+		g.Target = "en"
+		g.SetTarget("es")
+	}()
+	func() {
+		t.Log("setting Origin")
+		g.Origin = "en"
+		g.SetOrigin("es")
 	}()
 }
