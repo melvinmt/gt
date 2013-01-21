@@ -69,6 +69,7 @@ func main() {
     // tag notation.
 
     // Tag notation:
+    g.Origin("en")
     s4 := g.T("Hello %s#name, you have a new message from %s#friend.")
     fmt.Println(s4, "Melvin", "Alex")
     // Outputs: Melvin merhaba, Alex'den yeni bir mesaj var. 
