@@ -1,6 +1,6 @@
 # gt 
 
-A tiny but powerful Go internationalisation (i18n) library.
+A tiny but powerful Go internationalization (i18n) library.
 
 ## Installation
 
@@ -98,7 +98,7 @@ if err != nil {
 
 ## Edge cases
 
-It's not recommended to pass duplicate anonymous printf verbs to **gt**, e.g. `"%s, %s, %d"`. It will work when the target strings will keep the arguments in order, but when one language requires to format the string as `%s %d %s`, **gt** will fail because it doesn't know which `%s` to swap. You can easily solve this by tagging duplicate verbs: `%s#tag1 %s#tag2 %d`.
+It's not recommended to pass duplicate anonymous printf verbs to **gt**, e.g. `"%s, %s, %d"`. It will work when the target strings will keep the arguments in order, but when one language requires to format the string as `"%s %d %s"`, **gt** will fail because it doesn't know which `%s` to swap. You can easily solve this by tagging duplicate verbs: `"%s#tag1 %s#tag2 %d"`.
 
 Even when **gt** fails, it will try to return the origin string with formatted arguments. In this way, even when a translation has failed (or simply doesn't exist yet), you can at least present something to the end user.
 
@@ -117,12 +117,17 @@ if err != nil {
     fmt.Println(s) // outputs: Sorry John, this string is not translated yet!
 }
 ```
-
-You should always, always set Origin and Target (at least once) to prevent slice out of bound errors.
+The only case when it doesn't return a formatted origin string is when a key is used that doesn't exist and/or origin language is not set. In that case it will return the key. By default, Origin and Target are set to `"xx"` to prevent out of bound runtime errors.
 
 ## Feedback
 
 I just started coding in Go a week ago (jan '13) and I'm still learning everyday. Please tell me when something's not solved in a idiomatic or optimal way and I'll change it (better yet, make a pull request)! This is not to say that this library isn't ready to be used, it passes all the tests in [gt_test.go](https://github.com/melvinmt/gt/blob/master/gt_test.go) and you should be able to use it in your projects.
+
+## Docs
+
+http://godoc.org/github.com/melvinmt/gt
+
+## History
 
 ### *01/20/2013*: v1.0.0
 
