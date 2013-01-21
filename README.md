@@ -43,17 +43,17 @@ var g = &gt.Build{
 
 func main() {
     // Key based:
-    g.Target("es")
+    g.SetTarget("es")
     s1 := g.T("homepage-title")
     fmt.Println(s1) // outputs: ¡Hola mundo!
 
     // String based:
-    g.Target("zh") // notice that it's not necessary to include the region
+    g.SetTarget("zh") // notice that it's not necessary to include the region
     s2 := g.T("Hello World!")
     fmt.Println(s2) // outputs: 你好世界!
 
     // Parse arguments:
-    g.Target("nl")
+    g.SetTarget("nl")
     s3 := g.T("Welcome to %s, %s.", "Github", "Melvin")
     fmt.Println(s3) // outputs: Welkom bij Github, Melvin
 
@@ -61,23 +61,23 @@ func main() {
     // to parse arguments. The problem that you're facing here is that the order
     // of words is different in some languages:
 
-    g.Origin("es-LA")
-    g.Target("tr-TR")
+    g.SetOrigin("es-LA")
+    g.SetTarget("tr-TR")
     fmt.Println(g.T("Bienvenidos a %s, %s.", "Github", "Melvin"))
     // This outputs: Github, Melvin'ya hoşgeldiniz. This is roughly translated as:
     // Welcome to Melvin, Github.  Which is NOT what you want. You can solve this with
     // tag notation.
 
     // Tag notation:
-    g.Origin("en")
+    g.SetOrigin("en")
     s4 := g.T("Hello %s#name, you have a new message from %s#friend.")
     fmt.Println(s4, "Melvin", "Alex")
     // Outputs: Melvin merhaba, Alex'den yeni bir mesaj var. 
     // Which is in a different order, but correctly translated.
 
     // You can use any legal printf verb in combination with tags:
-    g.Origin("pt-BR")
-    g.Target("en")
+    g.SetOrigin("pt-BR")
+    g.SetTarget("en")
     s5 := g.T("Você precise pagar %10.2f#amount dólares em %d#days dias.")
     fmt.Println(s5, 499.95, 5) // outputs: You need to pay 499.95 dollars in 5 days.
 }
@@ -111,7 +111,7 @@ g := &gt.Build{
     },
     Origin: "en",
 }
-g.Target("es")
+g.SetTarget("es")
 s, err := g.Translate("incomplete", "John")
 if err != nil {
     fmt.Println(s) // outputs: Sorry John, this string is not translated yet!
