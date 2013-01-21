@@ -1,6 +1,6 @@
 # gt 
 
-A tiny but powerful Go internationalization (i18n) library.
+A tiny but powerful Go internationalisation (i18n) library.
 
 ## Installation
 
@@ -10,7 +10,7 @@ $ go get github.com/melvinmt/gt
 
 ## Usage
 ```go
-package gt
+package main
 
 import (
     "fmt"
@@ -26,16 +26,17 @@ var g = &gt.Build{
         },
         "homepage-welcome": {
             "en":    "Welcome to %s, %s.",
+            "es-LA": "Bienvenidos a %s, %s.",
             "tr-TR": "%s, %s'ya hoşgeldiniz.",
             "nl":    "Welkom bij %s, %s",
         },
         "dashboard-notice": {
             "en":    "Hello %s#name, you have a new message from %s#friend.",
-            "tr-TR": "%s#name merhaba, %sfriend'den yeni bir mesaj var.",
+            "tr-TR": "%s#name merhaba, %s#friend'den yeni bir mesaj var.",
         },
         "invoice": {
-            "en":    "You need to pay %10.2f#amount dollars in %d#days days.",
-            "pt-BR": "Você precisa pagar %10.2f#amount dólares em %d#days dias.",
+            "en":    "You need to pay %5.2f#amount dollars in %d#days days.",
+            "pt-BR": "Você precisa pagar %5.2f#amount dólares em %d#days dias.",
         },
     },
     Origin: "en", // the language you'll be translating from
@@ -48,7 +49,7 @@ func main() {
     fmt.Println(s1) // outputs: ¡Hola mundo!
 
     // String based:
-    g.SetTarget("zh") // notice that it's not necessary to include the region
+    g.SetTarget("zh-CN")
     s2 := g.T("Hello World!")
     fmt.Println(s2) // outputs: 你好世界!
 
@@ -63,25 +64,28 @@ func main() {
 
     g.SetOrigin("es-LA")
     g.SetTarget("tr-TR")
-    fmt.Println(g.T("Bienvenidos a %s, %s.", "Github", "Melvin"))
+    s4, err := g.Translate("Bienvenidos a %s, %s.", "Github", "Melvin")
+    if err != nil {
+        panic(err)
+    }
+    fmt.Println(s4)
     // This outputs: Github, Melvin'ya hoşgeldiniz. This is roughly translated as:
     // Welcome to Melvin, Github.  Which is NOT what you want. You can solve this with
     // tag notation.
 
     // Tag notation:
     g.SetOrigin("en")
-    s4 := g.T("Hello %s#name, you have a new message from %s#friend.")
-    fmt.Println(s4, "Melvin", "Alex")
+    s5 := g.T("Hello %s#name, you have a new message from %s#friend.")
+    fmt.Println(g.T(s5, "Melvin", "Alex"))
     // Outputs: Melvin merhaba, Alex'den yeni bir mesaj var. 
     // Which is in a different order, but correctly translated.
 
     // You can use any legal printf verb in combination with tags:
     g.SetOrigin("pt-BR")
     g.SetTarget("en")
-    s5 := g.T("Você precise pagar %10.2f#amount dólares em %d#days dias.")
-    fmt.Println(s5, 499.95, 5) // outputs: You need to pay 499.95 dollars in 5 days.
+    fmt.Printf(g.T("Você precisa pagar %5.2f#amount dólares em %d#days dias."), 499.95, 5)
+    // Outputs: You need to pay 499.95 dollars in 5 days.
 }
-
 ```
 
 ## Error handling
@@ -98,7 +102,7 @@ if err != nil {
 
 ## Edge cases
 
-It's not recommended to pass duplicate anonymous printf verbs to **gt**, e.g. `"%s, %s, %d"`. It will work when the target strings will keep the arguments in order, but when one language requires to format the string as `"%s %d %s"`, **gt** will fail because it doesn't know which `%s` to swap. You can easily solve this by tagging duplicate verbs: `"%s#tag1 %s#tag2 %d"`.
+It's not recommended to pass duplicate anonymous printf verbs to **gt**, e.g. `"%s, %s, %d"`. It will work when the target strings will keep the arguments in order, but when one language requires to format the string as `%s %d %s`, **gt** will fail because it doesn't know which `%s` to swap. You can easily solve this by tagging duplicate verbs: `%s#tag1 %s#tag2 %d`.
 
 Even when **gt** fails, it will try to return the origin string with formatted arguments. In this way, even when a translation has failed (or simply doesn't exist yet), you can at least present something to the end user.
 
@@ -117,17 +121,16 @@ if err != nil {
     fmt.Println(s) // outputs: Sorry John, this string is not translated yet!
 }
 ```
-The only case when it doesn't return a formatted origin string is when a key is used that doesn't exist and/or origin language is not set. In that case it will return the key. By default, Origin and Target are set to `"xx"` to prevent out of bound runtime errors.
+
+You should always, always set Origin and Target (at least once) to prevent slice out of bound errors.
 
 ## Feedback
 
 I just started coding in Go a week ago (jan '13) and I'm still learning everyday. Please tell me when something's not solved in a idiomatic or optimal way and I'll change it (better yet, make a pull request)! This is not to say that this library isn't ready to be used, it passes all the tests in [gt_test.go](https://github.com/melvinmt/gt/blob/master/gt_test.go) and you should be able to use it in your projects.
 
-## Docs
+### *01/21/2013*: v1.0.1
 
-http://godoc.org/github.com/melvinmt/gt
-
-## History
+- fixed some bugs in reverse lookup and cleaning tags
 
 ### *01/20/2013*: v1.0.0
 
