@@ -22,7 +22,6 @@ import (
 	"errors"
 	"fmt"
 	"regexp"
-	"strings"
 )
 
 type Strings map[string]map[string]string
@@ -90,18 +89,39 @@ func (b *Build) Translate(str string, args ...interface{}) (t string, err error)
 		return str, errors.New("Arguments count is different than verbs count.")
 	}
 
-	// Swap arguments positions and clean up tags.
-	r, _ := regexp.Compile(`(#[\w0-9-_]+)`)
-	for i, verb := range tVerbs {
-		for j, verb2 := range oVerbs {
-			if verb == verb2 {
-				args[j], args[i] = args[i], args[j]
-				cleanVerb := r.ReplaceAllLiteralString(verb, "")
-				t = strings.Replace(t, verb, cleanVerb, -1)
+	// Check if verbs are unique.
+	uniqueVerbs := true
+	q := make(map[string]int, len(tVerbs))
+	for _, v := range tVerbs {
+		if len(v) > 0 {
+			q[v[0]] = q[v[0]] + 1
+			if q[v[0]] > 1 {
+				uniqueVerbs = false
 				break
 			}
 		}
 	}
+
+	// Swap argument positions when swapping is necessary and verbs are unique.
+	if uniqueVerbs == true {
+		for i, v1 := range tVerbs {
+			for j, v2 := range oVerbs {
+				if len(args)-1 == i {
+					break
+				}
+				if v1[0] == v2[0] && args[i] != args[j] {
+					args[j], args[i] = args[i], args[j]
+					break
+				}
+			}
+		}
+	} else if h1, h2 := fmt.Sprintf("%v", oVerbs), fmt.Sprintf("%v", tVerbs); h1 != h2 {
+		return str, errors.New("Verbs have to be swapped but are not unique.")
+	}
+
+	// Clean up tags
+	r2, _ := regexp.Compile(`#[\w0-9-_]+`)
+	t = r2.ReplaceAllLiteralString(t, "")
 
 	// Parse arguments into string.
 	t = fmt.Sprintf(t, args...)
