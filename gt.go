@@ -42,6 +42,16 @@ func (b *Build) T(s string, a ...interface{}) (t string) {
 	return t
 }
 
+// SetOrigin is a shorthand method to set Origin
+func (b *Build) SetOrigin(lang string) {
+	b.Origin = lang
+}
+
+// SetTarget() is a shorthand method to set Origin
+func (b *Build) SetTarget(lang string) {
+	b.Target = lang
+}
+
 // Translate() translates a key or string from origin to target.
 // Parses augmented sprintf format when additional arguments are given.
 func (b *Build) Translate(str string, args ...interface{}) (t string, err error) {
