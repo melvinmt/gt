@@ -118,7 +118,7 @@ if err != nil {
 }
 ```
 
-You should always, always set Origin and Target (at least once) to prevent slice out of bound errors.
+By default, Origin and Target are set to `xx` to prevent out of bound runtime errors.
 
 ## Feedback
 
