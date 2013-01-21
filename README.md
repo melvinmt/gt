@@ -138,7 +138,7 @@ if err != nil {
 
 I just started coding in Go a week ago (jan '13) and I'm still learning everyday. Please tell me when something's not solved in a idiomatic or optimal way and I'll change it (better yet, make a pull request)! This is not to say that this library isn't ready to be used, it passes all the tests in [gt_test.go](https://github.com/melvinmt/gt/blob/master/gt_test.go) and you should be able to use it in your projects.
 
-### *01/20/2013*: v0.1
+### *01/20/2013*: v1.0.0
 
 - initial version of gt
 - gt passes all tests 
