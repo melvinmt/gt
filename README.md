@@ -64,7 +64,7 @@ func main() {
     g.Origin("es-LA")
     g.Target("tr-TR")
     fmt.Println(g.T("Bienvenidos a %s, %s.", "Github", "Melvin"))
-    // This outputs: "Github", Melvin'ya hoşgeldiniz. This is roughly translated as:
+    // This outputs: Github, Melvin'ya hoşgeldiniz. This is roughly translated as:
     // Welcome to Melvin, Github.  Which is NOT what you want. You can solve this with
     // tag notation.
 
@@ -131,7 +131,7 @@ g := &gt.Build{
 g.Target("es")
 s, err := g.Translate("incomplete", "John")
 if err != nil {
-    fmt.Println(s) // outputs: incomplete, because it doesn't know where to look!
+    fmt.Println(s) // outputs: incomplete, because it doesn't know which origin language you mean!
 }
 ```
 ## Feedback
