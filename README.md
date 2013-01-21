@@ -98,9 +98,9 @@ if err != nil {
 
 ## Edge cases
 
-It's not recommended to pass duplicate anonymous printf verbs to *gt*, e.g. `"%s, %s, %d"`. It will work when the target strings will keep the arguments in order, but when one language requires to format the string as `%s %d %s`, *gt* will fail because it doesn't know which `%s` to swap. You can easily solve this by tagging duplicate verbs: `%s#tag1 %s#tag2 %d`.
+It's not recommended to pass duplicate anonymous printf verbs to **gt**, e.g. `"%s, %s, %d"`. It will work when the target strings will keep the arguments in order, but when one language requires to format the string as `%s %d %s`, **gt** will fail because it doesn't know which `%s` to swap. You can easily solve this by tagging duplicate verbs: `%s#tag1 %s#tag2 %d`.
 
-Even when *gt* fails, it will try to return the origin string with formatted arguments. In this way, even when a translation has failed (or simply doesn't exist yet), you can at least present something to the end user.
+Even when **gt** fails, it will try to return the origin string with formatted arguments. In this way, even when a translation has failed (or simply doesn't exist yet), you can at least present something to the end user.
 
 ```go
 var f = &gt.Build{
@@ -118,7 +118,7 @@ if err != nil {
 }
 ```
 
-In a case where something horribly goes wrong, like providing a key when `Origin` language is not set, *gt* doesn't know where to start looking and will simply return the key. You can solve this by using literal strings instead of keys. Or, you know, by simply setting your `Origin` language :)
+In a case where something horribly goes wrong, like providing a key when `Origin` language is not set, **gt** doesn't know where to start looking and will simply return the key. You can solve this by using literal strings instead of keys. Or, you know, by simply setting your `Origin` language :)
 
 ```go
 var f = &gt.Build{
