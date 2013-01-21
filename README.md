@@ -26,7 +26,7 @@ var g = &gt.Build{
         },
         "homepage-welcome": {
             "en":    "Welcome to %s, %s.",
-            "tr-tr": "%s, %s'ya hoşgeldiniz.",
+            "tr-TR": "%s, %s'ya hoşgeldiniz.",
             "nl":    "Welkom bij %s, %s",
         },
         "dashboard-notice": {
