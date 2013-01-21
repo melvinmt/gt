@@ -56,8 +56,12 @@ func (b *Build) SetTarget(lang string) {
 // Parses augmented sprintf format when additional arguments are given.
 func (b *Build) Translate(str string, args ...interface{}) (t string, err error) {
 
-	if b.Origin == "" || b.Target == "" {
-		return b.cleanString(str, args...), errors.New("Origin or target is not set.")
+	if b.Origin == "" {
+		b.Origin = "xx" // default
+	}
+
+	if b.Target == "" {
+		b.Target = "xx" // default
 	}
 
 	// Try to find origin string by key or key[:2]
