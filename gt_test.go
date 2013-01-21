@@ -104,6 +104,35 @@ func TestNoOriginString(t *testing.T) {
 	}()
 }
 
+func TestNoIndex(t *testing.T) {
+	g := &Build{
+		Origin: "en",
+		Target: "es-LA",
+	}
+	func() {
+		t.Log("Test key")
+		s := "homepage-greeting"
+		tr, err := g.Translate(s)
+		if s != tr {
+			t.Errorf("Returned string '%s' is not the same as input string '%s'", tr, s)
+		}
+		if err == nil {
+			t.Error("Should return: target or origin is not set")
+		}
+	}()
+	func() {
+		t.Log("Test string")
+		s := "Welcome to %s#title, %s#name!"
+		tr, err := g.Translate(s)
+		if s != tr {
+			t.Errorf("Returned string '%s' is not the same as input string '%s'", tr, s)
+		}
+		if err == nil {
+			t.Error("Should return: target or origin is not set")
+		}
+	}()
+}
+
 func TestNoOrigin(t *testing.T) {
 	g := &Build{
 		Index: Strings{
