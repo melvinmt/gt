@@ -1,6 +1,6 @@
 # gt 
 
-A tiny but powerful Go internationalisation (i18n) library.
+A tiny but powerful Go internationalization (i18n) library.
 
 ## Installation
 
