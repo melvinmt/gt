@@ -61,7 +61,7 @@ func main() {
     // to parse arguments. The problem that you're facing here is that the order
     // of words is different in some languages:
 
-    g.Origin("es-LA") // this works even when region is not defined in your index
+    g.Origin("es-LA")
     g.Target("tr-TR")
     fmt.Println(g.T("Bienvenidos a %s, %s.", "Github", "Melvin"))
     // This outputs: "Github", Melvin'ya hoşgeldiniz. This is roughly translated as:
