@@ -28,9 +28,11 @@ type Strings map[string]map[string]string
 
 // Set up Build environment first before starting translations.
 type Build struct {
-	Origin string  // the origin env
-	Target string  // the target env
-	Index  Strings // the index which contains all keys and strings
+	Origin     string         // the origin env
+	Target     string         // the target env
+	Index      Strings        // the index which contains all keys and strings
+	regexVerbs *regexp.Regexp // caching regex Compiles
+	regexTags  *regexp.Regexp
 }
 
 // T() is a shorthand method for Translate. Ignores errors and strictly returns strings.
@@ -82,9 +84,12 @@ func (b *Build) Translate(str string, args ...interface{}) (t string, err error)
 	}
 
 	// Find verbs in both strings.
-	r1, _ := regexp.Compile(`%(?:\d+\$)?[+-]?(?:[ 0]|'.{1})?-?\d*(?:\.\d+)?#?[bcdeEfFgGopqstTuUvxX%]?[#[\w0-9-_]+]?`)
-	oVerbs := r1.FindAllStringSubmatch(o, -1)
-	tVerbs := r1.FindAllStringSubmatch(t, -1)
+	if b.regexVerbs == nil {
+		b.regexVerbs, _ = regexp.Compile(`%(?:\d+\$)?[+-]?(?:[ 0]|'.{1})?-?\d*(?:\.\d+)?#?[bcdeEfFgGopqstTuUvxX%]?[#[\w0-9-_]+]?`)
+	}
+	oVerbs := b.regexVerbs.FindAllStringSubmatch(o, -1)
+	tVerbs := b.regexVerbs.FindAllStringSubmatch(t, -1)
+
 	if len(oVerbs) != len(args) || len(tVerbs) != len(args) {
 		return str, errors.New("Arguments count is different than verbs count.")
 	}
@@ -120,8 +125,10 @@ func (b *Build) Translate(str string, args ...interface{}) (t string, err error)
 	}
 
 	// Clean up tags
-	r2, _ := regexp.Compile(`#[\w0-9-_]+`)
-	t = r2.ReplaceAllLiteralString(t, "")
+	if b.regexTags == nil {
+		b.regexTags, _ = regexp.Compile(`#[\w0-9-_]+`)
+	}
+	t = b.regexTags.ReplaceAllLiteralString(t, "")
 
 	// Parse arguments into string.
 	t = fmt.Sprintf(t, args...)
