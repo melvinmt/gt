@@ -121,7 +121,7 @@ if err != nil {
     fmt.Println(s) // outputs: Sorry John, this string is not translated yet!
 }
 ```
-When a key doesn't exist and/or an origin language is not set, it can't find any origin strings and will simply return the key.
+When a key is used and the key doesn't exist and/or an origin language is not set, it can't find any origin strings and will simply return the key.
 ## Docs
 
 http://godoc.org/github.com/melvinmt/gt
