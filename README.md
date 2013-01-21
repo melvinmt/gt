@@ -117,7 +117,7 @@ if err != nil {
     fmt.Println(s) // outputs: Sorry John, this string is not translated yet!
 }
 ```
-The only case when it doesn't return a formatted origin string is when a key is used that doesn't exist and/or origin language is not set. By default, Origin and Target are set to `"xx"` to prevent out of bound runtime errors.
+The only case when it doesn't return a formatted origin string is when a key is used that doesn't exist and/or origin language is not set. In that case it will return the key. By default, Origin and Target are set to `"xx"` to prevent out of bound runtime errors.
 
 ## Feedback
 
