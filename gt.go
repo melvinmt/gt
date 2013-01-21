@@ -68,10 +68,10 @@ func (b *Build) Translate(str string, args ...interface{}) (t string, err error)
 	var o string // origin string
 	key := str   // key can differ from str
 
-	if b.Index[key][b.Origin] != "" {
-		o = b.Index[key][b.Origin]
-	} else if b.Index[key][b.Origin[:2]] != "" {
-		o = b.Index[key][b.Origin[:2]]
+	if val, ok := b.Index[key][b.Origin]; ok {
+		o = val
+	} else if val, ok := b.Index[key][b.Origin[:2]]; ok {
+		o = val
 	} else {
 		// If key is not found, try matching strings in origin.
 		for k, v := range b.Index {
@@ -83,10 +83,10 @@ func (b *Build) Translate(str string, args ...interface{}) (t string, err error)
 	}
 
 	// Try to find target string by key or key[:2]
-	if b.Index[key][b.Target] != "" {
-		t = b.Index[key][b.Target]
-	} else if b.Index[key][b.Target[:2]] != "" {
-		t = b.Index[key][b.Target[:2]]
+	if val, ok := b.Index[key][b.Target]; ok {
+		t = val
+	} else if val, ok := b.Index[key][b.Target[:2]]; ok {
+		t = val
 	}
 
 	if o == "" {
