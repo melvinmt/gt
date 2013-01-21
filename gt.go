@@ -90,16 +90,16 @@ func (b *Build) Translate(str string, args ...interface{}) (t string, err error)
 	}
 
 	if o == "" {
-		return b.cleanString(str, args...), errors.New("Couldn't find origin string.")
+		return b.parseString(str, args...), errors.New("Couldn't find origin string.")
 	}
 
 	if t == "" {
-		return b.cleanString(o, args...), errors.New("Couldn't find target string.")
+		return b.parseString(o, args...), errors.New("Couldn't find target string.")
 	}
 
 	// When no additional arguments are given, there's nothing left to do.
 	if len(args) == 0 {
-		return t, err
+		return b.cleanTags(t), err
 	}
 
 	// Find verbs in both strings.
@@ -110,7 +110,7 @@ func (b *Build) Translate(str string, args ...interface{}) (t string, err error)
 	tVerbs := b.regexVerbs.FindAllStringSubmatch(t, -1)
 
 	if len(oVerbs) != len(args) || len(tVerbs) != len(args) {
-		return b.cleanString(o, args...), errors.New("Arguments count is different than verbs count.")
+		return b.parseString(o, args...), errors.New("Arguments count is different than verbs count.")
 	}
 
 	// Check if verbs are unique.
@@ -140,20 +140,25 @@ func (b *Build) Translate(str string, args ...interface{}) (t string, err error)
 			}
 		}
 	} else if h1, h2 := fmt.Sprintf("%v", oVerbs), fmt.Sprintf("%v", tVerbs); h1 != h2 {
-		return b.cleanString(o, args...), errors.New("Verbs have to be swapped but are not unique.")
+		return b.parseString(o, args...), errors.New("Verbs have to be swapped but are not unique.")
 	}
 
-	return b.cleanString(t, args...), err
+	return b.parseString(t, args...), err
 }
 
 // cleanString() removes tags and parses arguments.
-func (b *Build) cleanString(str string, args ...interface{}) (s string) {
-	// Clean up tags
+func (b *Build) parseString(str string, args ...interface{}) (s string) {
+	s = b.cleanTags(str)
+	// Parse string.
+	s = fmt.Sprintf(s, args...)
+	return s
+}
+
+// cleanTags() only removes tags.
+func (b *Build) cleanTags(str string) (s string) {
 	if b.regexTags == nil {
 		b.regexTags, _ = regexp.Compile(`#[\w0-9-_]+`)
 	}
 	s = b.regexTags.ReplaceAllLiteralString(str, "")
-	// Parse arguments into string.
-	s = fmt.Sprintf(s, args...)
 	return s
 }
