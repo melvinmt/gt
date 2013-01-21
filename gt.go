@@ -74,10 +74,12 @@ func (b *Build) Translate(str string, args ...interface{}) (t string, err error)
 		o = val
 	} else {
 		// If key is not found, try matching strings in origin.
-		for k, v := range b.Index {
-			if key == v[b.Origin] {
-				o, key = key, k
-				break
+		for k, m := range b.Index {
+			for l, v := range m {
+				if (l == b.Origin || l == b.Origin[:2]) && key == v {
+					o, key = v, k
+					break
+				}
 			}
 		}
 	}
