@@ -24,7 +24,8 @@ import (
 	"regexp"
 )
 
-type Strings map[string]map[string]string // map[key]map[language][translation]
+// Strings is a map type in the form of map[key]map[language][translation]
+type Strings map[string]map[string]string
 
 // Set up Build environment first before starting translations.
 type Build struct {
