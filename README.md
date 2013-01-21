@@ -14,7 +14,7 @@ package main
 
 import (
     "fmt"
-    "github.com/melvinmt/gt"
+    "test/gt"
 )
 
 var g = &gt.Build{
@@ -30,9 +30,9 @@ var g = &gt.Build{
             "tr-TR": "%s, %s'ya hoşgeldiniz.",
             "nl":    "Welkom bij %s, %s",
         },
-        "dashboard-notice": {
-            "en":    "Hello %s#name, you have a new message from %s#friend.",
-            "tr-TR": "%s#name merhaba, %s#friend'den yeni bir mesaj var.",
+        "eating": {
+            "en":    "%s#name came to %s#chain and ate a %s#hamburger.",
+            "tr-TR": "%s#chain'ya geldi ve %s#hamburger yedi %s#name.",
         },
         "invoice": {
             "en":    "You need to pay %5.2f#amount dollars in %d#days days.",
@@ -75,9 +75,9 @@ func main() {
 
     // Tag notation:
     g.SetOrigin("en")
-    s5 := g.T("Hello %s#name, you have a new message from %s#friend.")
-    fmt.Println(g.T(s5, "Melvin", "Alex"))
-    // Outputs: Melvin merhaba, Alex'den yeni bir mesaj var. 
+    s5 := "%s#name came to %s#chain and ate a %s#hamburger."
+    fmt.Println(g.T(s5, "Tom", "Burger King", "Whopper"))
+    // Outputs: Burger King'ya geldi ve Whopper yedi Tom.
     // Which is in a different order, but correctly translated.
 
     // You can use any legal printf verb in combination with tags:
