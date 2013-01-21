@@ -46,7 +46,7 @@ func (b *Build) T(s string, a ...interface{}) (t string) {
 func (b *Build) Translate(str string, args ...interface{}) (t string, err error) {
 
 	if b.Origin == "" || b.Target == "" {
-		return str, errors.New("Origin or target is not set.")
+		return b.cleanString(str, args...), errors.New("Origin or target is not set.")
 	}
 
 	// Try to find origin string by key or key[:2]
@@ -74,8 +74,12 @@ func (b *Build) Translate(str string, args ...interface{}) (t string, err error)
 		t = b.Index[key][b.Target[:2]]
 	}
 
-	if o == "" || t == "" {
-		return str, errors.New("Couldn't find origin or target string.")
+	if o == "" {
+		return b.cleanString(str, args...), errors.New("Couldn't find origin string.")
+	}
+
+	if t == "" {
+		return b.cleanString(o, args...), errors.New("Couldn't find target string.")
 	}
 
 	// When no additional arguments are given, there's nothing left to do.
@@ -91,7 +95,7 @@ func (b *Build) Translate(str string, args ...interface{}) (t string, err error)
 	tVerbs := b.regexVerbs.FindAllStringSubmatch(t, -1)
 
 	if len(oVerbs) != len(args) || len(tVerbs) != len(args) {
-		return str, errors.New("Arguments count is different than verbs count.")
+		return b.cleanString(o, args...), errors.New("Arguments count is different than verbs count.")
 	}
 
 	// Check if verbs are unique.
@@ -121,16 +125,20 @@ func (b *Build) Translate(str string, args ...interface{}) (t string, err error)
 			}
 		}
 	} else if h1, h2 := fmt.Sprintf("%v", oVerbs), fmt.Sprintf("%v", tVerbs); h1 != h2 {
-		return str, errors.New("Verbs have to be swapped but are not unique.")
+		return b.cleanString(o, args...), errors.New("Verbs have to be swapped but are not unique.")
 	}
 
+	return b.cleanString(t, args...), err
+}
+
+// cleanString() removes tags and parses arguments.
+func (b *Build) cleanString(str string, args ...interface{}) (s string) {
 	// Clean up tags
 	if b.regexTags == nil {
 		b.regexTags, _ = regexp.Compile(`#[\w0-9-_]+`)
 	}
-	t = b.regexTags.ReplaceAllLiteralString(t, "")
-
+	s = b.regexTags.ReplaceAllLiteralString(str, "")
 	// Parse arguments into string.
-	t = fmt.Sprintf(t, args...)
-	return t, err
+	s = fmt.Sprintf(s, args...)
+	return s
 }
