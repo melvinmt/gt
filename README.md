@@ -86,7 +86,7 @@ func main() {
 
 ## Error handling
 
-You can use the more verbose Translate() method to handle errors.
+T() always returns strings. You can use the more verbose Translate() method to handle errors.
 
 ```go
 key := "dashboard-notice"
