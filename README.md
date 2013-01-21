@@ -103,7 +103,7 @@ It's not recommended to pass duplicate anonymous printf verbs to **gt**, e.g. `"
 Even when **gt** fails, it will try to return the origin string with formatted arguments. In this way, even when a translation has failed (or simply doesn't exist yet), you can at least present something to the end user.
 
 ```go
-var f = &gt.Build{
+g := &gt.Build{
     Index: gt.Strings{
         "incomplete": {
             "en": "Sorry %s, this string is not translated yet!",
@@ -121,7 +121,7 @@ if err != nil {
 In a case where something horribly goes wrong, like providing a key when `Origin` language is not set, **gt** doesn't know where to start looking and will simply return the key. You can solve this by using literal strings instead of keys. Or, you know, by simply setting your `Origin` language :)
 
 ```go
-var f = &gt.Build{
+g := &gt.Build{
     Index: gt.Strings{
         "incomplete": {
             "en": "Sorry %s, this string is not translated yet!",
