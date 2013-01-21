@@ -118,21 +118,7 @@ if err != nil {
 }
 ```
 
-In a case where something horribly goes wrong, like providing a key when `Origin` language is not set, **gt** doesn't know where to start looking and will simply return the key. You can solve this by using literal strings instead of keys. Or, you know, by simply setting your `Origin` language :)
-
-```go
-g := &gt.Build{
-    Index: gt.Strings{
-        "incomplete": {
-            "en": "Sorry %s, this string is not translated yet!",
-        },
-    },
-}
-g.Target("es")
-s, err := g.Translate("incomplete", "John")
-if err != nil {
-    fmt.Println(s) // outputs: incomplete, because it doesn't know which origin language you mean!
-}
+You should always, always set Origin and Target (at least once) to prevent slice out of bound errors.
 ```
 ## Feedback
 
