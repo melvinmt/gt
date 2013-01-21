@@ -98,7 +98,7 @@ if err != nil {
 
 ## Edge cases
 
-It's not recommended to pass duplicate anonymous printf verbs to **gt**, e.g. `"%s, %s, %d"`. It will work when the target strings will keep the arguments in order, but when one language requires to format the string as `%s %d %s`, **gt** will fail because it doesn't know which `%s` to swap. You can easily solve this by tagging duplicate verbs: `%s#tag1 %s#tag2 %d`.
+It's not recommended to pass duplicate anonymous printf verbs to **gt**, e.g. `"%s, %s, %d"`. It will work when the target strings will keep the arguments in order, but when one language requires to format the string as `"%s %d %s"`, **gt** will fail because it doesn't know which `%s` to swap. You can easily solve this by tagging duplicate verbs: `"%s#tag1 %s#tag2 %d"`.
 
 Even when **gt** fails, it will try to return the origin string with formatted arguments. In this way, even when a translation has failed (or simply doesn't exist yet), you can at least present something to the end user.
 
@@ -118,7 +118,7 @@ if err != nil {
 }
 ```
 
-By default, Origin and Target are set to `xx` to prevent out of bound runtime errors.
+By default, Origin and Target are set to `"xx"` to prevent out of bound runtime errors.
 
 ## Feedback
 
