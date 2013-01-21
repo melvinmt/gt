@@ -83,7 +83,9 @@ func (b *Build) Translate(str string, args ...interface{}) (t string, err error)
 	}
 
 	// Find verbs in both strings.
-	oVerbs, tVerbs := findVerbs(o), findVerbs(t)
+	r1, _ := regexp.Compile(`%(?:\d+\$)?[+-]?(?:[ 0]|'.{1})?-?\d*(?:\.\d+)?#?[bcdeEfFgGopqstTuUvxX%]?[#[\w0-9-_]+]?`)
+	oVerbs := r1.FindAllStringSubmatch(o, -1)
+	tVerbs := r1.FindAllStringSubmatch(t, -1)
 	if len(oVerbs) != len(args) || len(tVerbs) != len(args) {
 		return str, errors.New("Arguments count is different than verbs count.")
 	}
@@ -104,14 +106,4 @@ func (b *Build) Translate(str string, args ...interface{}) (t string, err error)
 	// Parse arguments into string.
 	t = fmt.Sprintf(t, args...)
 	return t, err
-}
-
-// findVerbs() finds all occurences of printf verbs with optional tags
-func findVerbs(s string) (v []string) {
-	r, _ := regexp.Compile(`%(?:\d+\$)?[+-]?(?:[ 0]|'.{1})?-?\d*(?:\.\d+)?#?[bcdeEfFgGopqstTuUvxX%]?[#[\w0-9-_]+]?`)
-	m := r.FindAllStringSubmatch(s, -1)
-	if len(m) > 0 {
-		v = m[0]
-	}
-	return v
 }
