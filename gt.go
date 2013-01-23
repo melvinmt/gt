@@ -47,7 +47,7 @@ func (b *Build) SetOrigin(lang string) {
 	b.Origin = lang
 }
 
-// SetTarget() is a shorthand method to set Origin
+// SetTarget() is a shorthand method to set Target
 func (b *Build) SetTarget(lang string) {
 	b.Target = lang
 }
@@ -148,7 +148,7 @@ func (b *Build) Translate(str string, args ...interface{}) (t string, err error)
 	return b.parseString(t, args...), err
 }
 
-// cleanString() removes tags and parses arguments.
+// parseString() removes tags and parses arguments.
 func (b *Build) parseString(str string, args ...interface{}) (s string) {
 	s = b.cleanTags(str)
 	// Parse string.
