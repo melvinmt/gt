@@ -14,7 +14,7 @@ package main
 
 import (
     "fmt"
-    "test/gt"
+    "github.com/melvinmt/gt"
 )
 
 var g = &gt.Build{
